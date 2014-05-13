@@ -30,7 +30,7 @@
 
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+      <section id="main_content" class="inner">	
 <p>This page gives an overview of how to install CryptoSMT and how to use it.</p>
 
 <h2>
@@ -43,7 +43,10 @@
 </li>
 <li>CryptoMiniSat: <a href="https://github.com/msoos/cryptominisat">https://github.com/msoos/cryptominisat</a>
 </li>
-</ul><p>Currently no install script is used and you can simple add the paths by adding them to the <em>main.py</em></p>
+</ul>
+<p></p>
+<p>You can clone the repositories and build STP/CryptoMiniSat.</p>
+<p>Currently no install script is used and you have to add the paths to the <em>cryptosmt.py</em></p>
 
 <h3>
 <a name="python-libraries" class="anchor" href="#python-libraries"><span class="octicon octicon-link"></span></a>Python Libraries</h3>
@@ -62,14 +65,94 @@
 <a name="how-to-use" class="anchor" href="#how-to-use"><span class="octicon octicon-link"></span></a>How to use?</h2>
 
 You can get a list of all the parameters 
-<p>todo</p>
-<pre><code>$ python main.py --help
+<pre><code>$ python cryptosmt.py --help
 </code></pre>
+
+<p>A short overview of the parameters:</p>
+
+<table border="1">
+  <tr>
+    <th>Parameter</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>--cipher name</td>
+    <td>Specifies the cipher to use.</td>
+  </tr>
+  <tr>
+    <td>--rounds x</td>
+    <td>The number of rounds used of the cipher</td>
+  </tr>
+  <tr>
+    <td>--wordsize x</td>
+    <td>The size of the statewords in bits.</td>
+  </tr>
+  <tr>
+    <td>--mode x</td>
+    <td>Determines the mode of operation. See table below for a description.</td>
+  </tr>
+  <tr>
+    <td>--sweight x</td>
+    <td>The weight of the differential characteristic for the search to start.</td>
+  </tr>
+  <tr>
+    <td>--iterative</td>
+    <td>Only search for iterative characteristics.</td>
+  </tr>
+</table>
+
+The tool currently supports the following modes of operation:
+<table border="1">
+  <tr>
+    <th>Mode</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>Searches for the minimal weight characteristic.</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Searches for the minimal weight characteristic for an increasing number of rounds.</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Outputs all characteristics for the given parameters.</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Determines the probability of the differential for the given parameters.</td>
+  </tr>
+</table>
 
 <h3>
 <a name="input-files" class="anchor" href="#input-files"><span class="octicon octicon-link"></span></a>Input Files</h3>
+A second way to use the tool is by using input files in the YAML format.
 
-<p>todo</p>
+<pre><code>$ python cryptosmt.py --inputfile examples/*.yaml
+</code></pre>
+
+<p>A sample input file might look like this</p>
+<pre><code>---
+cipher: speck
+sweight: 10
+rounds: 8
+wordsize: 16
+mode: 0
+...
+</code></pre>
+
+<p>It is also possible to set variables to a fixed values. This is especially useful when trying to determine
+the probability of a differential.</p>
+
+<pre><code>fixedVariables:
+- x0: "0x200020"
+- y0: "0x080088"
+- x15: "0x080888"
+- y15: "0x000200"
+</code></pre>
+
+<p>Parameters from the inputfiles can be overwritten by using the commandline parameters.</p>
 
 <h3>
 <a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
